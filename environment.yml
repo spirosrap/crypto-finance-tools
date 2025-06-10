@@ -1,0 +1,22 @@
+name: crypto-trading
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pandas
+  - numpy
+  - matplotlib
+  - seaborn
+  - python-dotenv
+  - requests
+  - scikit-learn
+  - pip:
+    - ccxt  # For cryptocurrency exchange interactions
+    - python-binance  # For Binance API
+    - pandas-ta  # Additional technical analysis indicators
+    - plotly  # For interactive charts
+    - ta  # Technical analysis library
+    - pandas_ta  # Alternative technical analysis library that doesn't require ta-lib
+    - coinbase-advanced-py  # Coinbase Advanced Trading API 
