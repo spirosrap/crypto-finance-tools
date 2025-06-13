@@ -13,6 +13,13 @@ This project provides a suite of tools designed to help traders make informed de
 - **Trend Analysis**: Analyzes market trends to determine optimal entry and exit points
 - **Strategy Activation**: Automatically triggers trading strategies based on identified patterns
 
+### Volatility Analysis
+- **ATR Expansion Detection**: Monitors the Average True Range (ATR) to identify periods of increasing market volatility. This tool compares the current ATR value with historical values to determine if volatility is expanding, which can be useful for:
+  - Identifying potential breakout opportunities
+  - Adjusting position sizes based on market volatility
+  - Risk management and stop-loss placement
+  - Market regime detection
+
 ## Getting Started
 
 ### Prerequisites
