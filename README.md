@@ -25,7 +25,7 @@ This project provides a suite of tools designed to help traders make informed de
 ### Prerequisites
 - Python 3.8+
 - Conda (Miniconda or Anaconda)
-- Required API keys (You'll need to creae a `config.py` file. See below.)
+- Required API keys (You'll need to create a `config.py` file. See below.)
 
 ### Environment Setup
 
