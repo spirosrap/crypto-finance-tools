@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from typing import Tuple, Optional
 from datetime import datetime, timedelta, UTC
-from coinbaseservice import CoinbaseService
+from services.coinbase.coinbaseservice import CoinbaseService
 from config import API_KEY_PERPS, API_SECRET_PERPS
 import logging
 import time

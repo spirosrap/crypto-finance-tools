@@ -5,9 +5,12 @@ import time
 import uuid
 import logging
 from typing import Tuple, List
-from historicaldata import HistoricalData
+from .historicaldata import HistoricalData
 from concurrent.futures import ThreadPoolExecutor, TimeoutError
 from concurrent.futures import wait
+import ccxt
+import pandas as pd
+import numpy as np
 
 class CoinbaseService:
     def __init__(self, api_key, api_secret):

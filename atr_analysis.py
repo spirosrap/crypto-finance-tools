@@ -6,12 +6,16 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta, UTC
 import logging
-from coinbaseservice import CoinbaseService
+from services.coinbase.coinbaseservice import CoinbaseService
 from technicalanalysis import TechnicalAnalysis
 from config import API_KEY_PERPS, API_SECRET_PERPS
 import pandas_ta as ta
 import yfinance as yf
 from typing import Tuple
+import talib
+import pytz
+import ccxt
+import time
 
 # Set up logging
 logging.basicConfig(level=logging.INFO,
