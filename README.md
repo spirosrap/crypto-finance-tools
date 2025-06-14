@@ -19,6 +19,21 @@ This project provides a suite of tools designed to help traders make informed de
   - Adjusting position sizes based on market volatility
   - Risk management and stop-loss placement
   - Market regime detection
+- **ATR14 Monitor**: A real-time tool that displays the 14-period Average True Range (ATR) for the last 10 hours. This tool helps traders:
+  - Monitor current market volatility levels
+  - Track volatility changes over time
+  - Make informed decisions about position sizing
+  - Set appropriate stop-loss levels based on current market conditions
+
+To use the ATR14 Monitor:
+```python
+python atr_analyzer.py
+```
+
+The tool will display a table showing:
+- Timestamp for each hour
+- Current closing price
+- ATR14 value for that period
 
 ## Getting Started
 
