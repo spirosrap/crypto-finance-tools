@@ -6,16 +6,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta, UTC
 import logging
-from services.coinbase.coinbaseservice import CoinbaseService
-from technicalanalysis import TechnicalAnalysis
-from config import API_KEY_PERPS, API_SECRET_PERPS
-import pandas_ta as ta
 import yfinance as yf
 from typing import Tuple
-import talib
-import pytz
-import ccxt
-import time
 
 # Set up logging
 logging.basicConfig(level=logging.INFO,
@@ -134,62 +126,3 @@ def check_atr_expansion(symbol: str = "BTC-USD", lookback: int = 5) -> Tuple[boo
     is_expanding = current_atr > historical_atr
     
     return is_expanding, current_atr, historical_atr
-
-def main():
-    # Initialize services
-    cb = CoinbaseService(API_KEY_PERPS, API_SECRET_PERPS)
-    ta = TechnicalAnalysis(cb)
-    
-    # Product to analyze - use BTC-USDC which will be converted to BTC-PERP-INTX
-    product_id = 'BTC-USDC'
-    
-    # Fetch historical data (30 days)
-    logger.info(f"Fetching historical data for {product_id} over the last 30 days...")
-    df = fetch_historical_data(cb, product_id, days=30)
-    
-    if df.empty:
-        logger.error("Failed to fetch historical data. Exiting.")
-        return
-    
-    # Calculate ATR%
-    logger.info("Calculating ATR%...")
-    df = calculate_atr_percent(df, ta, product_id)
-    
-    if df.empty or 'atr_percent' not in df.columns:
-        logger.error("Failed to calculate ATR%. Exiting.")
-        return
-    
-    # Calculate percentiles
-    logger.info("Calculating percentiles...")
-    percentiles = calculate_percentiles(df)
-    
-    if not percentiles:
-        logger.error("Failed to calculate percentiles. Exiting.")
-        return
-    
-    # Print results
-    logger.info("\n=== ATR% Analysis Results ===")
-    logger.info(f"Product: {product_id}")
-    logger.info(f"Time period: Last 30 days")
-    logger.info(f"Number of data points: {len(df)}")
-    logger.info(f"70th percentile: {percentiles['percentile_70']:.4f}%")
-    logger.info(f"90th percentile: {percentiles['percentile_90']:.4f}%")
-    
-    logger.info("\n=== Suggested Volatility Thresholds ===")
-    logger.info(f"strong_threshold = {percentiles['percentile_90']:.4f}  # 90th percentile")
-    logger.info(f"moderate_threshold = {percentiles['percentile_70']:.4f}  # 70th percentile")
-    
-    # Save results to CSV for further analysis
-    df.to_csv(f"{product_id}_atr_analysis.csv")
-    logger.info(f"\nDetailed data saved to {product_id}_atr_analysis.csv")
-
-if __name__ == "__main__":
-    # Example usage
-    is_expanding, current_atr, historical_atr = check_atr_expansion()
-    
-    print(f"BTC/USD ATR Analysis:")
-    print(f"Current ATR: {current_atr:.2f}")
-    print(f"ATR 5 periods ago: {historical_atr:.2f}")
-    print(f"ATR is expanding: {is_expanding}")
-    
-    main() 
