@@ -6,34 +6,83 @@ A collection of powerful tools and utilities for cryptocurrency trading and fina
 
 This project provides a suite of tools designed to help traders make informed decisions in the cryptocurrency markets. The tools are built with a focus on technical analysis, trend identification, and automated trading strategies.
 
+## Requirements
+
+- pandas
+- numpy
+- ta-lib
+- ccxt
+
+Install the required packages using:
+```bash
+pip install -r requirements.txt
+```
+
 ## Features
 
-### Trend Identification & RSI Strategy
-- **RSI Dip Detection**: Identifies potential buying opportunities based on RSI (Relative Strength Index) dips
-- **Trend Analysis**: Analyzes market trends to determine optimal entry and exit points
-- **Strategy Activation**: Automatically triggers trading strategies based on identified patterns
+- **ATR Analysis**: Analyze the Average True Range (ATR) for market volatility insights.
+- **BTC/USD Analysis**: Perform specific analysis on BTC/USD data, including ATR and entry conditions.
+- **Trend Detection**: Detect market trends using various technical indicators.
 
-### Volatility Analysis
-- **ATR Expansion Detection**: Monitors the Average True Range (ATR) to identify periods of increasing market volatility. This tool compares the current ATR value with historical values to determine if volatility is expanding, which can be useful for:
-  - Identifying potential breakout opportunities
-  - Adjusting position sizes based on market volatility
-  - Risk management and stop-loss placement
-  - Market regime detection
-- **ATR14 Monitor**: A real-time tool that displays the 14-period Average True Range (ATR) for the last 10 hours. This tool helps traders:
-  - Monitor current market volatility levels
-  - Track volatility changes over time
-  - Make informed decisions about position sizing
-  - Set appropriate stop-loss levels based on current market conditions
+## Tools
 
-To use the ATR14 Monitor:
-```python
+### ATR Analyzer
+
+This tool analyzes the Average True Range (ATR) for a given dataset. It calculates the ATR and provides insights into market volatility.
+
+#### Usage
+
+Run the script directly:
+```bash
 python atr_analyzer.py
 ```
 
-The tool will display a table showing:
-- Timestamp for each hour
-- Current closing price
-- ATR14 value for that period
+### BTC ATR Analysis
+
+This tool performs ATR analysis specifically for BTC/USD data. It fetches hourly OHLCV data and calculates the ATR for the last 10 candles.
+
+#### Usage
+
+Run the script directly:
+```bash
+python btc_atr_analysis.py
+```
+
+### BTC Entry Conditions
+
+This tool checks if BTC/USD meets specific entry conditions based on RSI, relative volume, and ATR. It fetches hourly OHLCV data from Coinbase and evaluates the following conditions for the last 10 candles:
+
+1. **RSI Condition**: 14-period RSI < 30 (oversold condition)
+2. **Relative Volume Condition**: Current volume > 1.5x 14-period average volume
+3. **ATR Condition**: Current ATR > ATR from 5 periods ago
+
+The tool returns a DataFrame with the results for each of the last 10 candles, including the indicator values and whether each condition was met.
+
+#### Usage
+
+Run the script directly:
+```bash
+python btc_entry_conditions.py
+```
+
+Or import and use the function in your own code:
+```python
+from btc_entry_conditions import check_btc_entry_conditions_last_n
+
+df_results = check_btc_entry_conditions_last_n(10)
+print(df_results)
+```
+
+### Trend Detection
+
+This tool detects trends in BTC/USD data using various technical indicators. It provides insights into market trends and potential entry/exit points.
+
+#### Usage
+
+Run the script directly:
+```bash
+python trend_detection.py
+```
 
 ## Getting Started
 
