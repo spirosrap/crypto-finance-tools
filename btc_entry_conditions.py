@@ -3,6 +3,7 @@ import numpy as np
 import talib
 import ccxt
 from datetime import datetime, timedelta
+import pytz
 
 def check_btc_entry_conditions_last_n(n: int = 10):
     """
@@ -21,14 +22,25 @@ def check_btc_entry_conditions_last_n(n: int = 10):
     # Initialize exchange
     exchange = ccxt.coinbase()
     
+    # Get current time in UTC
+    utc_now = datetime.now(pytz.UTC)
+    
     # Get BTC/USD OHLCV data for the last 100 hours (to ensure enough data for calculations)
     timeframe = '1h'
-    since = exchange.parse8601((datetime.now() - timedelta(days=5)).isoformat())
-    ohlcv = exchange.fetch_ohlcv('BTC/USD', timeframe, since=since, limit=100)
+    # Get data from 5 days ago to ensure we have enough data for calculations
+    since = exchange.parse8601((utc_now - timedelta(days=5)).isoformat())
+    
+    # Fetch more data than needed to ensure we have the most recent
+    ohlcv = exchange.fetch_ohlcv('BTC/USD', timeframe, since=since, limit=150)
     
     # Convert to DataFrame
     df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
-    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+    df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms', utc=True)
+    
+    # Print the first and last timestamps to verify data range
+    print(f"Data range: from {df['timestamp'].iloc[0]} to {df['timestamp'].iloc[-1]}")
+    print(f"Current time (UTC): {utc_now}")
+    print(f"Time difference: {utc_now - df['timestamp'].iloc[-1]}")
     
     # Calculate indicators
     df['rsi'] = talib.RSI(df['close'].values, timeperiod=14)
@@ -68,6 +80,7 @@ def check_btc_entry_conditions_last_n(n: int = 10):
 if __name__ == "__main__":
     try:
         df_results = check_btc_entry_conditions_last_n(10)
+        print("\nResults for the last 10 candles:")
         print(df_results[['timestamp', 'rsi', 'relative_volume', 'atr', 'atr_5_periods_ago', 'rsi_condition', 'volume_condition', 'atr_condition', 'all_met']])
     except Exception as e:
         print(f"Error occurred: {e}") 
